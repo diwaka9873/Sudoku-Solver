@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Sudoku Solver using Backtracking Algorithm">
+    <title>Sudoku Solver — Backtracking Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <header id="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🧩</div>
+                <h1>Sudoku<span>Solver</span></h1>
+            </div>
+            <nav>
+                <a href="#solver" class="nav-link active">Solver</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#algorithm" class="nav-link">Algorithm</a>
+                <button id="btn-download-pdf" class="btn-pdf">📄 DSA Sheet</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="solver" class="hero-section">
+            <div class="hero-text">
+                <span class="badge">🧩 DSA Project — Backtracking</span>
+                <h2>Solve Any Sudoku<br><span class="gradient-text">In Milliseconds</span></h2>
+                <p>Generate random puzzles or input your own. Watch the backtracking algorithm solve it step-by-step.</p>
+            </div>
+        </section>
+
+        <section class="solver-section">
+            <div class="solver-container">
+                <div class="controls-panel">
+                    <div class="control-group">
+                        <label>Difficulty</label>
+                        <div class="difficulty-selector">
+                            <button class="diff-btn active" data-difficulty="easy" id="diff-easy">Easy</button>
+                            <button class="diff-btn" data-difficulty="medium" id="diff-medium">Medium</button>
+                            <button class="diff-btn" data-difficulty="hard" id="diff-hard">Hard</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Animation Speed</label>
+                        <div class="speed-control">
+                            <input type="range" id="speed-slider" min="1" max="100" value="85">
+                            <span id="speed-label">Fast</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="btn-generate" class="btn btn-primary">🎲 Generate Puzzle</button>
+                        <button id="btn-solve" class="btn btn-success">▶ Solve</button>
+                        <button id="btn-clear" class="btn btn-outline">🗑 Clear</button>
+                    </div>
+                    <div class="stats-panel">
+                        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-info"><span class="stat-value" id="stat-time">0 ms</span><span class="stat-label">Solve Time</span></div></div>
+                        <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-info"><span class="stat-value" id="stat-steps">0</span><span class="stat-label">Steps</span></div></div>
+                        <div class="stat-card"><div class="stat-icon">↩️</div><div class="stat-info"><span class="stat-value" id="stat-backtracks">0</span><span class="stat-label">Backtracks</span></div></div>
+                        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-info"><span class="stat-value" id="stat-cells">0/81</span><span class="stat-label">Filled</span></div></div>
+                    </div>
+                    <div id="status-message" class="status-message">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Ready — Generate or enter a puzzle</span>
+                    </div>
+                </div>
+                <div class="board-wrapper">
+                    <div class="board-glow"></div>
+                    <div id="sudoku-board" class="sudoku-board"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="info-section">
+            <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+            <p class="section-subtitle">The backtracking algorithm explores possibilities systematically and undoes choices that lead to dead ends.</p>
+            <div class="steps-grid">
+                <div class="step-card"><div class="step-number">01</div><h3>Find Empty Cell</h3><p>Scan the grid to find the first empty cell (value = 0).</p></div>
+                <div class="step-card"><div class="step-number">02</div><h3>Try Values 1–9</h3><p>Attempt placing digits 1–9 and validate against Sudoku constraints.</p></div>
+                <div class="step-card"><div class="step-number">03</div><h3>Validate Placement</h3><p>Check row, column, and 3×3 sub-grid for conflicts.</p></div>
+                <div class="step-card"><div class="step-number">04</div><h3>Recurse or Backtrack</h3><p>If valid, recurse. If no digit works, backtrack and try next option.</p></div>
+            </div>
+        </section>
+
+        <section id="algorithm" class="info-section algorithm-section">
+            <h2 class="section-title">The <span class="gradient-text">Algorithm</span></h2>
+            <div class="code-block-wrapper">
+                <div class="code-header"><span class="code-title">backtracking_solver.pseudo</span></div>
+                <pre class="code-block"><code>function solveSudoku(board):
+  for row from 0 to 8:
+    for col from 0 to 8:
+      if board[row][col] == 0:
+        for num from 1 to 9:
+          if isValid(board, row, col, num):
+            board[row][col] = num
+            if solveSudoku(board): return true
+            board[row][col] = 0    // backtrack
+        return false
+  return true  // solved!
+
+function isValid(board, row, col, num):
+  Check row, column, and 3x3 sub-grid
+  Return false if num already exists
+  Return true otherwise</code></pre>
+            </div>
+            <div class="complexity-cards">
+                <div class="complexity-card"><h4>Time Complexity</h4><div class="complexity-value">O(9<sup>n</sup>)</div><p>Each empty cell tries up to 9 digits.</p></div>
+                <div class="complexity-card"><h4>Space Complexity</h4><div class="complexity-value">O(n²)</div><p>Recursion stack + 9×9 board.</p></div>
+                <div class="complexity-card"><h4>Approach</h4><div class="complexity-value">Backtracking</div><p>DFS with constraint checking.</p></div>
+            </div>
+        </section>
+
+        <footer id="app-footer">
+            <div class="footer-content">
+                <p>Built with ❤️ using <strong>HTML, CSS, JavaScript</strong> — DSA: Backtracking</p>
+                <p class="footer-sub">Sudoku Solver • © 2026 Diwakar</p>
+            </div>
+        </footer>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
